@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/assets/css/styles.css">
+
+	<title>Login Page</title>
+</head>
+
+<body>
+<div class="global-container">
+	<div th:replace="~{common/header :: header}"></div>
+
+	<div class="container">
+	<div class="form-container">
+		<ul>
+			<li th:text="${successLogout}" style="color: limegreen;"></li>
+			<li th:text="${error}" style="color: red;"></li>
+		</ul>
+		<form th:action="@{/login}" method="POST">
+			<div class="form-group">
+				<label for="email">Email:</label>
+				<input type="email" name="username" id="email" placeholder="Enter your email" required>
+			</div>
+			<div class="form-group">
+				<label for="password">Password:</label>
+				<input type="password" name="password" id="password" placeholder="Enter your password" required>
+			</div>
+			<div class="form-group">
+				<p class="remMe-p">Remember Me</p> 
+				<input type="checkbox" name="remember-me" class="remMe-inp"> 
+			</div>
+			<div class="form-group btn">
+				<input type="submit" value="Submit">
+			</div>
+			<a th:href="@{/register}">New User!</a>
+		</form>
+	</div>
+	</div>
+	<div th:replace="~{common/footer :: footer}"></div>
+	</div>
+</body>
+
+</html>

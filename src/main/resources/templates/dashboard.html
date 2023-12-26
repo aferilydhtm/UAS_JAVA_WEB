@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6" >
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/assets/css/styles.css">
+
+	<title th:text="#{dashboard.title}">Dashboard Page</title>
+</head>
+
+<body>
+<div class="global-container">
+	<div th:replace="~{common/header :: header}"></div>
+	<div class="container">
+	<div class="dashboard-container">
+		<div class="user-details">
+			<h2 th:text="'' + #{dashboard.welcom} + ${person.name}+'!'"></h2>
+			<h3 sec:authorize="hasRole('ROLE_MEMBER')"
+				th:text="''+#{dashboard.welcom.class} +${person.studyClass.name}+'!'"> </h3>
+		</div>
+		<div class="dashbaord-links-container">
+			<a th:href="@{/viewProfile(userId=${person.personId})}" th:text="#{dashboard.viewProfile}">
+				View My Profile
+			</a>
+			<a sec:authorize="hasRole('ROLE_MEMBER')"
+				th:href="@{'/member/viewEnrolledCourses/1?sortBy=name&sortDir=asc&userId='+${person.personId}}"
+				th:text="#{dashboard.viewEnrolledCourses}"
+				>
+				View My Enrolled Courses
+			</a>
+			<a sec:authorize="hasRole('ROLE_MEMBER')"
+				th:href="@{'/member/viewAllCourses/1?sortBy=name&sortDir=asc&userId='+${person.personId}}"
+				th:text="#{dashboard.viewAllCourses}"
+				>
+				View All Courses
+			</a>
+			<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/viewAllCourses/1?sortBy=name&sortDir=asc}"
+			th:text="#{dashboard.viewAllCourses}"
+			>
+				View All Courses
+			</a>
+			<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/viewAllMembers/1?sortBy=name&sortDir=asc}" 
+			th:text="#{dashboard.viewAllMembers}">
+				View All Members
+			</a>
+			<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/viewAllClasses/1?sortBy=name&sortDir=asc}"
+			th:text="#{dashboard.viewAllClasses}">
+			>
+				View All Classes
+			</a>
+		</div>
+	</div>
+	</div>
+	<div th:replace="~{common/footer :: footer}"></div>
+</div>
+</body>
+
+</html>

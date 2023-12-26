@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/assets/css/styles.css">
+	<title>Register Page</title>
+</head>
+
+<body>
+	 <div th:replace="~{common/header :: header}">...</div> 
+	<div class="register-container">
+		<ul>
+			<li th:each="error: ${errors}" th:text="${error}"></li>
+			<li th:text="${isExist}"></li>
+		</ul>
+		<form th:action="@{/createUser}" method="POST" th:object="${person}">
+			<div class="register-form-group">
+				<label for="name">Name:</label>
+				<input type="text" th:field="*{name}" id="name" placeholder="user name" required>
+			</div>
+			<div class="register-form-group">
+				<label for="mobileNumber">Mobile Number:</label>
+				<input type="tel" id="mobileNumber" th:field="*{mobileNumber}" placeholder="mobile number" required>
+			</div>
+			<div class="register-form-group">
+				<label for="email">Email:</label>
+				<input type="email" th:field="*{email}" id="email" placeholder="email" required>
+			</div>
+			<div class="register-form-group">
+				<label for="confirmEmail">Confirm Email:</label>
+				<input type="email" th:field="*{confirmEmail}" id="confirmEmail" placeholder="confirm email" required>
+			</div>
+			<div class="register-form-group">
+				<label for="password">Password:</label>
+				<input type="password" th:field="*{password}" id="password" placeholder="password" required>
+			</div>
+			<div class="register-form-group">
+				<label for="confirmPassword">Confirm Password:</label>
+				<input type="password" th:field="*{confirmPassword}" id="confirmPassword" placeholder="confirm password"
+					required>
+			</div>
+			<div class="register-form-group">
+				<label for="class">Select Class:</label>
+				<select id="class" name="classNum">
+					<option th:each="class : ${classes}" th:value="${class.classId}" th:text="${class.name}"></option>
+				</select>
+			</div>
+			<div class="register-form-group">
+				<input type="submit" value="Save">
+			</div>
+		</form>
+	</div>
+ <div th:replace="~{common/footer :: footer}"></div>
+</body>
+
+</html>
