@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/assets/css/styles.css">
+	<title>Classes Page</title>
+</head>
+
+<body>
+<div th:replace="~{common/header :: header}">...</div> 
+	<div class="all-classes-container">
+		<ul style="list-style: none;">
+			<li style="color: red;" th:each="error : ${errors}" th:text="${error}"></li>
+		</ul>
+		<h2>Course Classes</h2>
+		<form th:action="@{/admin/addNewClass}" method="POST" th:object="${newClass}">
+			<input type="text" placeholder="add new class.." th:field="*{name}">
+			<button type="submit">Add Class</button>
+		</form>
+		<table>
+			<thead>
+				<tr>
+					<th>
+						<a th:href="@{'/admin/viewAllClasses/' + ${curPage} + '?sortBy=classId&sortDir=' + ${sortDir}}">
+							Id
+						</a>
+					</th>
+					<th>
+						<a th:href="@{'/admin/viewAllClasses/' + ${curPage} + '?sortBy=name&sortDir=' + ${sortDir}}">
+							Name
+						</a>
+					</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="class : ${classes}">
+					<td th:text="${class.classId}"></td>
+					<td th:text="${class.name}"></td>
+					<td>
+						<a th:href="@{/admin/viewClassMembers/1(classId=${class.classId}, sortBy=name, sortDir=asc)}">
+							View Members
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="back-btn-container">
+		<button class="back-btn">
+			<a th:href="@{/dashboard}">
+				Back
+			</a>
+		</button>
+	</div>
+	<div class="pagination-container">
+	<span class="pagination" th:each="i : ${#numbers.sequence(1, pagesCount==0?1:pagesCount)}">
+		<a th:if="${curPage != i}"
+			th:href="@{'/admin/viewAllClasses/'+${i}+'?sortBy='+${sortBy}+'&sortDir=' + ${sortDir.equals('asc')?'desc':'asc'}}"
+			th:text="${i}">
+		</a>
+		<a th:if="${curPage == i}" th:text="${i}" class="active"> </a>
+	</span>
+	</div>
+<div th:replace="~{common/footer :: footer}"></div>
+</body>
+
+</html>
