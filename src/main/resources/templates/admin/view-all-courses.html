@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/assets/css/styles.css">
+	<title>All Courses Page</title>
+</head>
+
+<body>
+	<div class="global-container">
+		<div th:replace="~{common/header :: header}"></div>
+
+		<div class="courses-container">
+			<div class="all-courses-container">
+				<ul style="list-style: none;">
+					<li style="color: red;" th:each="error : ${errors}" th:text="${error}"></li>
+				</ul>
+				<h2>Course Courses</h2>
+				<form th:action="@{/admin/addNewCourse}" method="POST" th:object="${newCourse}">
+					<input type="text" placeholder="add new course.." th:field="*{name}">
+					<input type="number" placeholder="price.." th:field="*{price}">
+					<button type="submit">Add Course</button>
+				</form>
+				<table>
+					<thead>
+						<tr>
+							<th>
+								<a
+									th:href="@{'/admin/viewAllCourses/' + ${curPage} + '?sortBy=courseId&sortDir=' + ${sortDir}}">
+									Id
+								</a>
+							</th>
+							<th>
+								<a
+									th:href="@{'/admin/viewAllCourses/' + ${curPage} + '?sortBy=name&sortDir=' + ${sortDir}}">
+									Name
+								</a>
+							</th>
+							<th>
+								<a
+									th:href="@{'/admin/viewAllCourses/' + ${curPage} + '?sortBy=price&sortDir=' + ${sortDir}}">
+									Price
+								</a>
+							</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="course : ${courses}">
+							<td th:text="${course.courseId}"></td>
+							<td th:text="${course.name}"></td>
+							<td th:text="${course.price}"></td>
+							<td>
+								<a
+									th:href="@{/admin/viewCourseMembers/1(courseId=${course.courseId}, sortBy=name, sortDir=asc)}">
+									View Members
+								</a> |
+								<a th:href="@{/admin/deleteCourse(courseId=${course.courseId})}">
+									Delete Course
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="back-btn-container">
+				<button class="back-btn">
+					<a th:href="@{/dashboard}">
+						Back
+					</a>
+				</button>
+			</div>
+			<div class="pagination-container">
+				<span class="pagination" th:each="i : ${#numbers.sequence(1, pagesCount==0?1:pagesCount)}">
+					<a th:if="${curPage != i}"
+						th:href="@{'/admin/viewAllCourses/'+${i}+'?sortBy='+${sortBy}+'&sortDir=' + ${sortDir.equals('asc')?'desc':'asc'}}"
+						th:text="${i}"> </a>
+					<a th:if="${curPage == i}" th:text="${i}" class="active"> </a>
+				</span>
+			</div>
+		</div>
+		<div th:replace="~{common/footer :: footer}"> </div>
+	</div>
+</body>
+
+</html>
