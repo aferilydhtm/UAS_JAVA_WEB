@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/assets/css/styles.css">
+	<title>Member Details Page</title>
+</head>
+
+<body>
+	<div th:replace="~{common/header :: header}"></div>
+	<div class="member-details-container">
+
+		<h2 th:text="${member.name}+' Details'"></h2>
+
+		<form th:object="${member}">
+			<div class="member-details-form-group">
+				<input type="text" th:field="*{name}" name="name" placeholder="user name" readonly>
+				<input type="text" th:field="*{mobileNumber}" id="mobileNumber" placeholder="mobile number" readonly>
+			</div>
+
+			<div class="member-details-form-group">
+				<input type="email" th:field="*{email}" id="email" placeholder="email" readonly>
+				<input type="text" th:field="*{studyClass.name}" id="studyClass" placeholder="Class" readonly>
+			</div>
+
+			<div class="member-details-form-group">
+				<input type="text" th:field="*{address.address1}" id="address1" placeholder="Address1" readonly>
+				<input type="text" th:field="*{address.address2}" id="address2" placeholder="Address2" readonly>
+			</div>
+
+			<div class="member-details-form-group">
+				<input type="text" th:field="*{address.city}" id="city" placeholder="City" readonly>
+				<input type="text" th:field="*{address.status}" id="status" placeholder="Status" readonly>
+			</div>
+			<div class="member-details-form-group">
+				<input type="text" th:field="*{address.zipCode}" id="zipcode" placeholder="Zip Code" readonly>
+			</div>
+			<div th:if="${member.role.name.equals('MEMBER')}" class="member-details-form-group">
+				<select id="class">
+					<option th:each="course: ${member.courses}" th:text="${course.name}"></option>
+				</select>
+			</div>
+			<div class="member-details-form-group">
+				<img th:if="${member.photo == null}" th:src="@{/images/default-photo.jpg}" class="personal-photo">
+				<img th:unless="${member.photo == null}" alt="personal photo"
+					th:src="@{'data:image/jpeg;base64,'+${member.photo}}" class="personal-photo">
+			</div>
+		</form>
+
+		<div class="back-btn-container">
+			<button class="back-btn">
+				<a th:href="@{/admin/viewAllMembers/1?sortBy=name&sortDir=asc}">
+					Back
+				</a>
+			</button>
+		</div>
+
+	</div>
+	<div th:replace="~{common/footer :: footer}"></div>
+</body>
+
+</html>

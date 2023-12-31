@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/assets/css/styles.css">
+	<title>Course Members Page</title>
+</head>
+
+<body>
+	<div th:replace="~{common/header :: header}"></div>
+	<div class="course-members-container">
+		<ul>
+			<li style="color: red;" th:text="${error}"></li>
+		</ul>
+
+		<h2 th:text="'Members Enrolled In '+ ${courseName}+' Course'"></h2>
+
+		<form th:action="@{/admin/addMemberToCourse(courseId=${courseId})}" method="POST">
+			<input type="email" placeholder="add member to the course.." name="email">
+			<button type="submit">Add Member</button>
+		</form>
+		<table>
+			<thead>
+				<tr>
+					<th>
+						<a href="#">
+							Photo
+						</a>
+					</th>
+					<th>
+						<a
+							th:href="@{'/admin/viewCourseMembers/' + ${curPage} + '?sortBy=name&sortDir=' + ${sortDir}+'&courseId='+${courseId}}">
+							Name
+						</a>
+					</th>
+					<th>
+						<a
+							th:href="@{'/admin/viewCourseMembers/' + ${curPage} + '?sortBy=email&sortDir=' + ${sortDir}+'&courseId='+${courseId}}">
+							Email
+						</a>
+					</th>
+					<th>
+						<a
+							th:href="@{'/admin/viewCourseMembers/' + ${curPage} + '?sortBy=mobileNumber&sortDir=' + ${sortDir}+'&courseId='+${courseId}}">
+							Mobile Number
+						</a>
+					</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="member : ${members}">
+					<td>
+						<img th:if="${member.photo == null}" th:src="@{/images/default-photo.jpg}"
+							class="personal-photo">
+						<img th:unless="${member.photo == null}" alt="personal photo"
+							th:src="@{'data:image/jpeg;base64,'+${member.photo}}" class="personal-photo">
+					</td>
+					<td th:text="${member.name}"></td>
+					<td th:text="${member.email}"></td>
+					<td th:text="${member.mobileNumber}"></td>
+					<td>
+						<a
+							th:href="@{/admin/deleteMemberFromCourse(memberId=${member.personId}, courseId=${courseId})}">
+							Delete Member
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="back-btn-container">
+		<button class="back-btn">
+			<a th:href="@{/admin/viewAllCourses/1?sortBy=name&sortDir=asc}">
+				Back
+			</a>
+		</button>
+	</div>
+	<div class="pagination-container">
+		<span class="pagination" th:each="i : ${#numbers.sequence(1, pagesCount==0?1:pagesCount)}">
+			<a th:if="${curPage != i}"
+				th:href="@{'/admin/viewClassMembers/'+${i}+ '?classId=' + ${classId}+'&sortBy='+${sortBy}+'&sortDir=' + ${sortDir.equals('asc')?'desc':'asc'}}"
+				th:text="${i}"> </a>
+			<a th:if="${curPage == i}" th:text="${i}" class="active"> </a>
+		</span>
+	</div>
+
+	<div th:replace="~{common/footer :: footer}"></div>
+</body>
+
+</html>

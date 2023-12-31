@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/assets/css/styles.css">
+	<title>Class Member Page</title>
+</head>
+
+<body>
+	<div th:replace="~{common/header :: header}"></div>
+	<div class="class-members-container">
+		<ul>
+			<li style="color: red;" th:text="${error}"></li>
+		</ul>
+
+		<h2 th:text="'Members Assigned To '+ ${className}"></h2>
+
+		<form th:action="@{/admin/addMemberToClass(classId= ${classId})}" method="POST">
+			<input type="email" placeholder="add member to the class.." name="email">
+			<button type="submit">Add Member</button>
+		</form>
+		<table>
+			<thead>
+				<tr>
+					<th>
+						<a href="#">
+							Photo
+						</a>
+					</th>
+					<th>
+						<a
+							th:href="@{'/admin/viewClassMembers/' + ${curPage} + '?sortBy=name&sortDir=' + ${sortDir}+'&classId='+${classId}}">
+							Name
+						</a>
+					</th>
+					<th>
+						<a
+							th:href="@{'/admin/viewClassMembers/' + ${curPage} + '?sortBy=email&sortDir=' + ${sortDir}+'&classId='+${classId}}">
+							Email
+						</a>
+					</th>
+					<th>
+						<a
+							th:href="@{'/admin/viewClassMembers/' + ${curPage} + '?sortBy=mobileNumber&sortDir=' + ${sortDir}+'&classId='+${classId}}">
+							Mobile Number
+						</a>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="member : ${members}" th:if="${member.role.roleId == 2}">
+					<td>
+						<img th:if="${member.photo == null}" th:src="@{/images/default-photo.jpg}"
+							class="personal-photo">
+						<img th:unless="${member.photo == null}" alt="personal photo"
+							th:src="@{'data:image/jpeg;base64,'+${member.photo}}" class="personal-photo">
+					</td>
+					<td th:text="${member.name}"></td>
+					<td th:text="${member.email}"></td>
+					<td th:text="${member.mobileNumber}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="back-btn-container">
+		<button class="back-btn">
+			<a th:href="@{/admin/viewAllClasses/1?sortBy=name&sortDir=asc}">
+				Back
+			</a>
+		</button>
+	</div>
+	<div class="pagination-container">
+		<span class="pagination" th:each="i : ${#numbers.sequence(1, pagesCount==0?1:pagesCount)}">
+			<a th:if="${curPage != i}"
+				th:href="@{'/admin/viewClassMembers/'+${i}+ '?classId=' + ${classId}+'&sortBy='+${sortBy}+'&sortDir=' + ${sortDir.equals('asc')?'desc':'asc'}}"
+				th:text="${i}"> </a>
+			<a th:if="${curPage == i}" th:text="${i}" class="active"> </a>
+		</span>
+	</div>
+	<div th:replace="~{common/footer :: footer}"></div>
+</body>
+
+</html>
