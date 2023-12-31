@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Footer</title>
+</head>
+
+<body>
+	<footer style="padding-top:2px;">
+		<span sec:authorize="isAuthenticated()">
+			<a th:href="@{/local(lang=en)}">English</a> |
+			<a th:href="@{/local(lang=es)}">Español</a>
+		</span>
+		<div>
+			<p th:text="#{footer.rights}" >© 2023 All Rights Reserved </p>
+			<a href="#" th:text="#{footer.contact}">Contact Me</a>
+		  </div> 
+	</footer>
+</body>
+
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>header</title>
+</head>
+
+<body>
+	<header class="header-container">
+		<div sec:authorize="isAuthenticated()" >
+			<img th:if="${session.photo == null}" th:src="@{/images/default-photo.jpg}" class="personal-photo">
+			<img th:unless="${session.photo == null}" alt="personal photo" th:src="@{'data:image/jpeg;base64,'+${session.photo}}" class="personal-photo">
+
+		</div>
+		<div>
+			<a sec:authorize="isAuthenticated()" th:href="@{/logout}" th:text="#{header.logout}">Logout</a>
+			<a sec:authorize="isAuthenticated()" th:href="@{/dashboard}" th:text="#{header.dashboard}">Dashboard</a>
+			<a sec:authorize="isAnonymous()" th:href="@{/login}" th:text="#{header.login}">Login</a>
+		</div>
+	</header>
+</body>
+
+</html>
