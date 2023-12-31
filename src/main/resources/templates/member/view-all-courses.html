@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/assets/css/styles.css">
+	<title>All Courses Page</title>
+</head>
+
+<body>
+	<div th:replace="~{common/header :: header}"></div>
+	<div class="all-courses-container">
+		<h2 th:text="'All Course Courses'"></h2>
+		<table>
+			<thead>
+				<tr>
+					<th>
+						<a
+							th:href="@{'/member/viewAllCourses/' + ${curPage} + '?sortBy=courseId&sortDir=' + ${sortDir}+'&userId='+${userId}}">
+							Id
+						</a>
+					</th>
+					<th>
+						<a
+							th:href="@{'/member/viewAllCourses/' + ${curPage} + '?sortBy=name&sortDir=' + ${sortDir}+'&userId='+${userId}}">
+							Name
+						</a>
+					</th>
+					<th>
+						<a
+							th:href="@{'/member/viewAllCourses/' + ${curPage} + '?sortBy=price&sortDir=' + ${sortDir}+'&userId='+${userId}}">
+							Price
+						</a>
+					</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="course : ${courses}">
+					<td th:text="${course.courseId}"></td>
+					<td th:text="${course.name}"></td>
+					<td th:text="${course.price}"></td>
+					<td>
+						<a th:href="@{/member/enroll(courseId=${course.courseId})}">
+							Enroll
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="back-btn-container">
+		<button class="back-btn">
+			<a th:href="@{/dashboard}">
+				Back
+			</a>
+		</button>
+	</div>
+	<div class="pagination-container">
+		<span class="pagination" th:each="i : ${#numbers.sequence(1, pagesCount==0?1:pagesCount)}">
+			<a th:if="${curPage != i}"
+				th:href="@{'/member/viewAllCourses/' + ${i} + '?userId=' + ${userId}+'&sortBy='+${sortBy}+'&sortDir=' + ${sortDir.equals('asc')?'desc':'asc'}}"
+				th:text="${i}"> </a>
+			<a th:if="${curPage == i}" th:text="${i}" class="active"> </a>
+		</span>
+	</div>
+	<div th:replace="~{common/footer :: footer}"></div>
+</body>
+
+</html>
