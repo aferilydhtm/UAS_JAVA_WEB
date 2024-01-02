@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/assets/css/styles.css">
+	<title>Login Page</title>
+</head>
+
+<body>
+	<div class="global-container">
+		<div th:replace="~{common/header :: header}">...</div>
+		<div class="global-profile-container">
+			<div class="profile-container">
+				<ul>
+					<li th:text="${successUpdate}"></li>
+					<li style="color: red;" th:each="error : ${errors}" th:text="${error}"></li>
+				</ul>
+				<form th:action="@{/updateProfile}" method="POST" th:object="${profile}" enctype="multipart/form-data">
+
+					<h2 th:text="${profile.name}+' Profile Details'"></h2>
+
+					<div class="profile-form-group">
+						<input type="text" th:field="*{name}" id="name" placeholder="user name">
+
+						<input type="tel" id="mobileNumber" th:field="*{mobileNumber}" placeholder="mobile number">
+					</div>
+					<div class="profile-form-group">
+						<input type="email" th:field="*{email}" id="email" placeholder="email" readonly>
+						<input type="text" th:field="*{address1}" id="address1" placeholder="Address1">
+					</div>
+					<div class="profile-form-group">
+						<input type="text" th:field="*{address2}" id="address2" placeholder="Address2">
+
+						<input type="text" th:field="*{city}" id="city" placeholder="City">
+					</div>
+					<div class="profile-form-group">
+						<input type="text" th:field="*{status}" id="status" placeholder="Status">
+
+						<input type="text" th:field="*{zipCode}" id="zipcode" placeholder="Zip Code">
+					</div>
+
+					<div class="file-container">
+						<input type="file" accept="image/*" name="personal_photo">
+
+						<img th:if="${photo == null}" th:src="@{images/default-photo.jpg}">
+						<img th:unless="${photo == null}" alt="personal photo"
+							th:src="@{'data:image/jpeg;base64,'+${photo}}">
+					</div>
+
+					<div class="profile-form-group">
+						<input type="submit" value="Update">
+					</div>
+				</form>
+
+				<div class="back-btn-container">
+					<button class="back-btn">
+						<a th:href="@{/dashboard}">
+							Back
+						</a>
+					</button>
+				</div>
+			</div>
+		</div>
+		<div th:replace="~{common/footer :: footer}"></div>
+	</div>
+</body>
+
+</html>
